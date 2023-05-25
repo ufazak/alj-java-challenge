@@ -1,6 +1,5 @@
-package jp.co.axa.apidemo.repositories;
+package jp.co.axa.apidemo.domain.employee;
 
-import jp.co.axa.apidemo.entities.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

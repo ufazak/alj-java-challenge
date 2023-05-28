@@ -1,4 +1,4 @@
-package jp.co.axa.apidemo.domain.employee;
+package jp.co.axa.apidemo.domain.user;
 
 import jp.co.axa.apidemo.infra.jpa.convertor.StringEncryptionConvertor;
 import lombok.Data;
@@ -10,20 +10,17 @@ import static java.time.ZonedDateTime.now;
 
 @Data
 @Entity
-@Table(name = "employees")
-public class Employee {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Convert(converter = StringEncryptionConvertor.class)
-    private String name;
+    private String email;
 
     @Convert(converter = StringEncryptionConvertor.class)
-    private Integer salary;
-
-    @Convert(converter = StringEncryptionConvertor.class)
-    private String department;
+    private String password;
 
     private ZonedDateTime creationTime = now();
 }

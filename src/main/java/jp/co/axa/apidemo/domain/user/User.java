@@ -17,7 +17,7 @@ public class User {
     private Long id;
 
     @Convert(converter = StringEncryptionConvertor.class)
-    private String email;
+    private String username;
 
     @Convert(converter = StringEncryptionConvertor.class)
     private String password;

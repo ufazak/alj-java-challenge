@@ -19,7 +19,6 @@ public class Employee {
     @Convert(converter = StringEncryptionConvertor.class)
     private String name;
 
-    @Convert(converter = StringEncryptionConvertor.class)
     private Integer salary;
 
     @Convert(converter = StringEncryptionConvertor.class)

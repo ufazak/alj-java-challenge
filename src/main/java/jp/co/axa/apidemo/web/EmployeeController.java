@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public void save(Employee employee) {
+    public void save(@RequestBody Employee employee) {
         service.save(employee);
         System.out.println("Employee Saved Successfully");
     }

@@ -1,8 +1,9 @@
 package jp.co.axa.apidemo.infra.security.filter;
 
-import jp.co.axa.apidemo.infra.security.auth.BearerAuthentication;
+import jp.co.axa.apidemo.infra.security.auth.BearerTokenConfigurer.BearerAuthentication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -10,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.function.Function;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -22,6 +24,7 @@ public class BearerTokenFilter extends OncePerRequestFilter {
     @SuppressWarnings("FieldCanBeLocal")
     private final String BEARER = "Bearer";
     private final Function<BearerAuthentication, Authentication> authentication;
+    private final RequestMatcher protectedEndpointsMatcher;
 
     @Override
     protected void doFilterInternal(
@@ -30,18 +33,20 @@ public class BearerTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         String token = resolveToken(request);
-        try {
-            getContext().setAuthentication(authentication.apply(new BearerAuthentication(token)));
-        } catch (Exception ex) {
-            clearContext();
+        if (protectedEndpointsMatcher.matches(request) && Objects.nonNull(token)) {
+            try {
+                getContext().setAuthentication(authentication.apply(new BearerAuthentication(token)));
+            } catch (Exception ex) {
+                clearContext();
+            }
         }
         filterChain.doFilter(request, response);
     }
 
     private String resolveToken(HttpServletRequest request) {
         String header = request.getHeader(AUTHORIZATION);
-        return header.startsWith(BEARER)
-                ? header.substring(header.indexOf(BEARER)).trim()
+        return Objects.nonNull(header) && header.startsWith(BEARER)
+                ? header.substring(BEARER.length()).trim()
                 : null;
     }
 }

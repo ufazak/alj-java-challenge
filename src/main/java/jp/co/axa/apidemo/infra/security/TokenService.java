@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Long.valueOf;
+
 @Service
 @RequiredArgsConstructor
 public class TokenService {
@@ -25,7 +27,7 @@ public class TokenService {
     public TokenData checkAndParse(String token) {
         try {
             Claims claims = jwtService.parse(token);
-            return new TokenData(Long.valueOf(claims.get("userId").toString()));
+            return new TokenData(valueOf(claims.get("userId").toString()));
         } catch (Exception ex) {
             throw new InvalidTokenException("invalid token");
         }

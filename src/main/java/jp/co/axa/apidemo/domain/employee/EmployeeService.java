@@ -18,17 +18,17 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public Employee findById(Long employeeId) {
-        return repository.findById(employeeId).orElse(null);
+    public Employee findById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Transactional
-    public void save(Employee employee) {
-        repository.save(employee);
+    public Employee save(Employee employee) {
+        return repository.save(employee);
     }
 
     @Transactional
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public void delete(Employee employee) {
+        repository.delete(employee);
     }
 }

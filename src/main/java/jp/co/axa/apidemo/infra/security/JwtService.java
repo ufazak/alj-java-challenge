@@ -6,11 +6,12 @@ import jp.co.axa.apidemo.infra.exception.InvalidTokenException;
 import lombok.AllArgsConstructor;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
+import static java.time.Instant.now;
+import static java.util.Date.from;
 
 @AllArgsConstructor
 public class JwtService {
@@ -38,6 +39,6 @@ public class JwtService {
     }
 
     private Date newExpirationDate(Duration ttl) {
-        return Date.from(Instant.now().plus(ttl));
+        return from(now().plus(ttl));
     }
 }

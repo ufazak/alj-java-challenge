@@ -10,7 +10,7 @@ public class RequestMatchers {
     );
 
     public static final List<String> BEARER_TOKEN_REQUEST_MATCHERS = Arrays.asList(
-            "/api/v1/employees",
-            "/api/v1/employees/{id}"
+            "/api/v1/employees/**",
+            "/api/v1/history/**"
     );
 }

@@ -2,11 +2,14 @@ package jp.co.axa.apidemo.web;
 
 import jp.co.axa.apidemo.domain.employee.Employee;
 import jp.co.axa.apidemo.domain.employee.EmployeeService;
+import jp.co.axa.apidemo.domain.history.OperationHistoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
+
+import static jp.co.axa.apidemo.domain.history.OperationHistory.OperationType.*;
 
 @RestController
 @AllArgsConstructor
@@ -14,6 +17,7 @@ import java.util.Objects;
 public class EmployeeController {
 
     private final EmployeeService service;
+    private final OperationHistoryService operationHistoryService;
 
     @GetMapping
     public List<Employee> getAll() {
@@ -26,21 +30,25 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public void save(@RequestBody Employee employee) {
-        service.save(employee);
-        System.out.println("Employee Saved Successfully");
+    public void save(@RequestBody Employee requestBody) {
+        Employee employee = service.save(requestBody);
+        operationHistoryService.addEntry(CREATE, employee);
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
-        System.out.println("Employee Deleted Successfully");
+        Employee employee = service.findById(id);
+        if (Objects.nonNull(employee)) {
+            service.delete(employee);
+            operationHistoryService.addEntry(DELETE, employee);
+        }
     }
 
     @PutMapping
-    public void update(@RequestBody Employee employee) {
-        if (Objects.nonNull(service.findById(employee.getId()))) {
-            service.save(employee);
+    public void update(@RequestBody Employee requestBody) {
+        if (Objects.nonNull(service.findById(requestBody.getId()))) {
+            Employee employee = service.save(requestBody);
+            operationHistoryService.addEntry(UPDATE, employee);
         }
     }
 }

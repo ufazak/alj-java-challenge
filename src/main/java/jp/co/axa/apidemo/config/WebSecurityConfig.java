@@ -9,11 +9,14 @@ import jp.co.axa.apidemo.infra.security.auth.BearerTokenConfigurer;
 import jp.co.axa.apidemo.infra.security.auth.PublicAuthConfigurer;
 import jp.co.axa.apidemo.infra.security.auth.UserAuth;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static jp.co.axa.apidemo.infra.RequestMatchers.BEARER_TOKEN_REQUEST_MATCHERS;
 import static jp.co.axa.apidemo.infra.RequestMatchers.PUBLIC_AUTH_REQUEST_MATCHERS;
@@ -51,5 +54,10 @@ public class WebSecurityConfig {
             http.apply(new PublicAuthConfigurer())
                     .requestMatcher(PUBLIC_AUTH_REQUEST_MATCHERS);
         }
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

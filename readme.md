@@ -45,8 +45,20 @@ Application (with the embedded H2 database) is ready to be used ! You can access
 
 #### Your experience in Java
 
-Please let us know more about your Java experience in a few sentences. For example:
+Please let us know more about your Java experience in a few sentences.
 
-- I have 3 years experience in Java and I started to use Spring Boot from last year
-- I'm a beginner and just recently learned Spring Boot
-- I know Spring Boot very well and have been using it for many years
+- I have 6 years experience in Java and I started to use Spring Boot from last two years
+- I have worked mainly in government projects, but recently I have been working in SSO project via OAuth2 protocol
+- I know Spring Boot, Angular, Jakarta EE and PL/pgSQL very well and have been using it for many years
+
+I did not have time to write tests, but you can first use the following query to test
+
+```
+curl --location 'http://localhost:8080/api/v1/auth/token' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=5C11682EC2F8DB8E1460DA443B5ED8B1' \
+--data '{
+    "username": "admin",
+    "password": "aGVsbG9Xb3JsZA=="
+}'
+```
